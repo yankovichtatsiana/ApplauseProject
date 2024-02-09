@@ -1,0 +1,38 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="SeleniumTest">
+    <test name="Filters 1">
+        <parameter name="highlightsValue" value="Sale"/>
+        <parameter name="markeValue" value="4711"/>
+        <parameter name="productArtValue" value="Eau de Cologne"/>
+        <parameter name="geschenkValue" value=""/>
+        <parameter name="furWenValue" value="Unisex"/>
+
+        <classes>
+            <class name="org.example.SeleniumTest"/>
+        </classes>
+    </test>
+
+    <test name="Filters 2">
+        <parameter name="highlightsValue" value="NEU"/>
+        <parameter name="markeValue" value=""/>
+        <parameter name="productArtValue" value="Parfum"/>
+        <parameter name="geschenkValue" value=""/>
+        <parameter name="furWenValue" value="Weiblich"/>
+
+        <classes>
+            <class name="org.example.SeleniumTest"/>
+        </classes>
+    </test>
+
+    <test name="Filters 3">
+        <parameter name="highlightsValue" value="Limitiert"/>
+        <parameter name="markeValue" value="BALR"/>
+        <parameter name="productArtValue" value="Eau de Parfum"/>
+        <parameter name="geschenkValue" value="Valentinstag"/>
+        <parameter name="furWenValue" value="Unisex"/>
+
+        <classes>
+            <class name="org.example.SeleniumTest"/>
+        </classes>
+    </test>
+</suite>
