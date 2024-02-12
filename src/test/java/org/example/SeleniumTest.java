@@ -7,6 +7,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.*;
 
 import org.apache.logging.log4j.LogManager;
@@ -70,13 +71,19 @@ public class SeleniumTest {
             String filterLocator = "//*[@class='facet__title' and contains(text(),'TEXT')]".replace("TEXT", filterName);
             String valueLocator = "//*[@class='facet-option__checkbox--rating-stars']/div[contains(text(), 'TEXT')]".replace("TEXT", valueName);
             driver.findElement(By.xpath(filterLocator)).click();
-            WebElement value = driver.findElement(By.xpath(valueLocator));
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", value);
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", value);
+
+            WebElement checkbox = driver.findElement(By.xpath(valueLocator + "/parent::div/preceding-sibling::div"));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", checkbox);
 
             log.info("Set Filter " + filterName + " with value " + valueName);
 
             waitForParfumFiltersPanelLoaded(filterName);
+
+            closeFilter();
+
+            verifyFilterAdded(valueName);
+            log.info("Expected filter value is applied.");
+
         }
     }
 
@@ -89,12 +96,28 @@ public class SeleniumTest {
     }
 
     private void waitForParfumFiltersPanelLoaded(String filterName) {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-            wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(@class, 'headline-wrapper')]")));
-            log.info("Page is reloaded after applying the filter " + filterName + " Continue performing the test");
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class, 'headline-wrapper')]")));
+        log.info("Page is reloaded after applying the filter " + filterName + ". Continue performing the test");
     }
 
-    @AfterSuite
+    private void closeFilter() {
+        WebElement closeButton = driver.findElement(By.xpath("//button[contains(@class, 'facet__close-button')]"));
+
+        try {
+            closeButton.click();
+        } catch (StaleElementReferenceException e) {
+            log.info("Close button is not found.");
+        }
+    }
+
+    private void verifyFilterAdded(String valueName) {
+        String addedFilterLocator = "//button[contains(@class, 'selected-facets__value') and contains(text(), 'TEXT')]".replace("TEXT", valueName);
+        WebElement addedFilter = driver.findElement(By.xpath(addedFilterLocator));
+        Assert.assertTrue(addedFilter.isDisplayed(), "Filter is not added. It's not expected!");
+    }
+
+    @AfterMethod
     private void tearDown() {
         driver.quit();
     }

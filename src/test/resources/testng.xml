@@ -26,8 +26,8 @@
 
     <test name="Filters 3">
         <parameter name="highlightsValue" value="Limitiert"/>
-        <parameter name="markeValue" value="BALR"/>
-        <parameter name="productArtValue" value="Eau de Parfum"/>
+        <parameter name="markeValue" value="Acqua di Parma"/>
+        <parameter name="productArtValue" value="Duftset"/>
         <parameter name="geschenkValue" value="Valentinstag"/>
         <parameter name="furWenValue" value="Unisex"/>
 
